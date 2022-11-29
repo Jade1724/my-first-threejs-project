@@ -5,11 +5,18 @@ const gui = new dat.GUI();
 const world = {
     plane: {
         width: 10,
+        height: 10,
     },
 };
-gui.add(world.plane, "width", 1, 20).onChange(() => {
+
+const generatePlane = () => {
     planeMesh.geometry.dispose();
-    planeMesh.geometry = new THREE.PlaneGeometry(world.plane.width, 5, 10, 10);
+    planeMesh.geometry = new THREE.PlaneGeometry(
+        world.plane.width,
+        world.plane.height,
+        10,
+        10
+    );
 
     const { array } = planeMesh.geometry.attributes.position;
     for (let i = 0; i < array.length; i += 3) {
@@ -19,7 +26,9 @@ gui.add(world.plane, "width", 1, 20).onChange(() => {
 
         array[i + 2] = z + Math.random();
     }
-});
+};
+gui.add(world.plane, "width", 1, 20).onChange(generatePlane);
+gui.add(world.plane, "height", 1, 20).onChange(generatePlane);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
