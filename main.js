@@ -1,5 +1,5 @@
 import * as THREE from "https://unpkg.com/three@0.126.1/build/three.module.js";
-import { OrbitControls } from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js'
+import { OrbitControls } from "https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 
 const gui = new dat.GUI();
@@ -8,7 +8,7 @@ const world = {
         width: 10,
         height: 10,
         widthSegments: 10,
-        heightSegments: 10
+        heightSegments: 10,
     },
 };
 
@@ -35,6 +35,7 @@ gui.add(world.plane, "height", 1, 20).onChange(generatePlane);
 gui.add(world.plane, "widthSegments", 1, 50).onChange(generatePlane);
 gui.add(world.plane, "heightSegments", 1, 50).onChange(generatePlane);
 
+const raycaster = new THREE.Raycaster();
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
     75,
@@ -77,9 +78,23 @@ const backLight = new THREE.DirectionalLight(0xffffff, 1);
 backLight.position.set(0, 0, -1);
 scene.add(backLight);
 
+const mouse = {
+    x: undefined,
+    y: undefined,
+};
+
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    // planeMesh.rotation.x += 0.01;
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObject(planeMesh);
+    if (intersects.length > 0)  {
+      console.log('intersecting');
+    }
 }
 animate();
+
+addEventListener("mousemove", (event) => {
+    mouse.x = (event.clientX / innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / innerHeight) * 2 + 1;
+});
