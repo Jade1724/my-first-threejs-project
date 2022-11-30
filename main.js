@@ -31,7 +31,7 @@ const generatePlane = () => {
         world.plane.width,
         world.plane.height,
         world.plane.widthSegments,
-        world.plane.heightSegments
+        world.plane.heightSegments,
     );
 
     // vertices position randomization
@@ -59,7 +59,7 @@ const generatePlane = () => {
 gui.add(world.plane, "width", 1, 500).onChange(generatePlane);
 gui.add(world.plane, "height", 1, 500).onChange(generatePlane);
 gui.add(world.plane, "widthSegments", 1, 100).onChange(generatePlane);
-gui.add(world.plane, "heightSegments", 1, 0).onChange(generatePlane);
+gui.add(world.plane, "heightSegments", 1, 100).onChange(generatePlane);
 
 const raycaster = new THREE.Raycaster();
 const scene = new THREE.Scene();
